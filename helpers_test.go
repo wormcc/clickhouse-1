@@ -20,8 +20,8 @@ func Test_NumInput(t *testing.T) {
 		"SELECT * FROM example WHERE os_id = ? AND browser_id = ?":                                2,
 		"SELECT * FROM example WHERE os_id in (?,?) browser_id = ?":                               3,
 		"SELECT * FROM example WHERE os_id IN (?, ?) AND browser_id = ?":                          3,
-		"SELECT a ? '+' : '-'":                                                                    0,
-		"SELECT a ? '+' : '-' FROM example WHERE a = ? AND b IN(?)":                               2,
+		"SELECT a ? '+' : '-'": 0,
+		"SELECT a ? '+' : '-' FROM example WHERE a = ? AND b IN(?)": 2,
 		`SELECT
 			a ? '+' : '-'
 		FROM example WHERE a = 42 and b in(
@@ -30,13 +30,14 @@ func Test_NumInput(t *testing.T) {
 			?
 		)
 		`: 3,
-		"SELECT * from EXAMPLE LIMIT ?":                                       1,
-		"SELECT * from EXAMPLE LIMIT ?, ?":                                    2,
-		"SELECT * from EXAMPLE WHERE os_id like ?":                            1,
-		"SELECT * FROM example WHERE a BETWEEN ? AND ?":                       2,
-		"SELECT * FROM example WHERE a BETWEEN ? AND ? AND b = ?":             3,
-		"SELECT * FROM example WHERE a = ? AND b BETWEEN ? AND ?":             3,
-		"SELECT * FROM example WHERE a BETWEEN ? AND ? AND b BETWEEN ? AND ?": 4,
+		"SELECT * from EXAMPLE LIMIT ?":                                          1,
+		"SELECT * from EXAMPLE LIMIT ?, ?":                                       2,
+		"SELECT * from EXAMPLE WHERE os_id like ?":                               1,
+		"SELECT * FROM example WHERE a BETWEEN ? AND ?":                          2,
+		"SELECT * FROM example WHERE a BETWEEN ? AND ? AND b = ?":                3,
+		"SELECT * FROM example WHERE a = ? AND b BETWEEN ? AND ?":                3,
+		"SELECT * FROM example WHERE a BETWEEN ? AND ? AND b BETWEEN ? AND ?":    4,
+		"SELECT toStartOfInterval(time, INTERVAL ?) FROM example WHERE b=? AND c=?": 3,
 	} {
 		assert.Equal(t, num, numInput(query), query)
 	}

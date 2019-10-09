@@ -112,6 +112,7 @@ func (stmt *stmt) bind(args []driver.NamedValue) string {
 		limit     = newMatcher("limit")
 		between   = newMatcher("between")
 		and       = newMatcher("and")
+		interval  = newMatcher("interval")
 	)
 	switch {
 	case stmt.NumInput() != 0:
@@ -150,6 +151,8 @@ func (stmt *stmt) bind(args []driver.NamedValue) string {
 						keyword = true
 					default:
 						if limit.matchRune(char) || like.matchRune(char) {
+							keyword = true
+						} else if interval.matchRune(char) {
 							keyword = true
 						} else if between.matchRune(char) {
 							keyword = true

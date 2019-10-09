@@ -23,6 +23,7 @@ func numInput(query string) int {
 		limit         = newMatcher("limit")
 		between       = newMatcher("between")
 		and           = newMatcher("and")
+		interval      = newMatcher("interval")
 	)
 	for {
 		if char, _, err := reader.ReadRune(); err == nil {
@@ -59,6 +60,8 @@ func numInput(query string) int {
 				keyword = true
 			default:
 				if limit.matchRune(char) || like.matchRune(char) {
+					keyword = true
+				} else if interval.matchRune(char) {
 					keyword = true
 				} else if between.matchRune(char) {
 					keyword = true
